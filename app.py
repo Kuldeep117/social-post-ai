@@ -13,7 +13,7 @@ if st.button("Generate Posts"):
         with st.spinner("Generating..."):
             try:
                 token = os.environ.get("HF_TOKEN")
-                API_URL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.1"
+                API_URL = "https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta"
                 payload = json.dumps({"inputs": "Write 5 social media posts about " + topic}).encode()
                 req = urllib.request.Request(API_URL, data=payload, headers={
                     "Content-Type": "application/json",
