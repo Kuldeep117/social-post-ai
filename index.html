@@ -3,987 +3,196 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>SavingHero 🦸 — Aaj Kitna Bachaya?</title>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800;900&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<title>SavingHero | Smart Finance</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Syne:wght@800&display=swap" rel="stylesheet">
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-
-:root {
-  --bg: #0a0814;
-  --surface: #130f24;
-  --surface2: #1c1735;
-  --border: #2a2448;
-  --gold: #FFD700;
-  --gold2: #FFA500;
-  --purple: #7C3AED;
-  --purple2: #9F67FF;
-  --green: #10B981;
-  --green2: #34D399;
-  --red: #EF4444;
-  --blue: #3B82F6;
-  --pink: #EC4899;
-  --text: #F1F0FF;
-  --text2: #9B97C4;
-  --radius: 20px;
-}
-
-body {
-  font-family: 'Nunito', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* PARTICLES */
-#particles {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-}
-
-.star {
-  position: absolute;
-  border-radius: 50%;
-  background: white;
-  animation: twinkle var(--d, 3s) ease-in-out infinite;
-  opacity: 0;
-}
-
-@keyframes twinkle {
-  0%,100% { opacity:0; transform: scale(0.5); }
-  50% { opacity: var(--op, 0.6); transform: scale(1); }
-}
-
-/* CONFETTI */
-.confetti-piece {
-  position: fixed;
-  width: 10px; height: 10px;
-  top: -10px;
-  pointer-events: none;
-  z-index: 999;
-  animation: confettiFall var(--cd, 3s) ease-in forwards;
-  border-radius: var(--cr, 50%);
-}
-
-@keyframes confettiFall {
-  0% { transform: translateY(0) rotate(0deg) translateX(0); opacity: 1; }
-  100% { transform: translateY(100vh) rotate(720deg) translateX(var(--cx, 50px)); opacity: 0; }
-}
-
-/* LAYOUT */
-.app {
-  max-width: 480px;
-  margin: 0 auto;
-  padding: 0 0 100px;
-  position: relative;
-  z-index: 1;
-}
-
-/* TOP NAV */
-.topbar {
-  background: linear-gradient(180deg, rgba(124,58,237,0.3) 0%, transparent 100%);
-  padding: 20px 20px 0;
-  text-align: center;
-  position: relative;
-}
-
-.hero-logo {
-  font-family: 'Baloo 2', cursive;
-  font-size: 2rem;
-  font-weight: 900;
-  background: linear-gradient(135deg, var(--gold), var(--gold2), var(--purple2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: -0.5px;
-}
-
-.hero-tagline {
-  font-size: 0.78rem;
-  color: var(--text2);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 16px;
-}
-
-/* HERO CARD */
-.hero-card {
-  margin: 0 16px 16px;
-  background: linear-gradient(135deg, #1e1040, #2d1b6e, #1a0f3a);
-  border: 1.5px solid rgba(159,103,255,0.3);
-  border-radius: 24px;
-  padding: 24px;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero-card::before {
-  content: '';
-  position: absolute;
-  top: -60px; right: -60px;
-  width: 200px; height: 200px;
-  background: radial-gradient(circle, rgba(255,215,0,0.15), transparent 70%);
-}
-
-.hero-card::after {
-  content: '';
-  position: absolute;
-  bottom: -40px; left: -40px;
-  width: 150px; height: 150px;
-  background: radial-gradient(circle, rgba(124,58,237,0.2), transparent 70%);
-}
-
-.date-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-  font-size: 0.8rem;
-  color: var(--text2);
-}
-
-.date-badge {
-  background: rgba(255,255,255,0.08);
-  padding: 5px 12px;
-  border-radius: 50px;
-  font-weight: 700;
-}
-
-.streak-badge {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  background: linear-gradient(135deg, rgba(255,165,0,0.2), rgba(255,215,0,0.1));
-  border: 1px solid rgba(255,215,0,0.3);
-  padding: 5px 12px;
-  border-radius: 50px;
-  color: var(--gold);
-  font-weight: 800;
-  font-size: 0.82rem;
-}
-
-.saving-display {
-  text-align: center;
-  margin: 8px 0 16px;
-}
-
-.saving-label {
-  font-size: 0.78rem;
-  color: var(--text2);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin-bottom: 6px;
-}
-
-.saving-amount {
-  font-family: 'Baloo 2', cursive;
-  font-size: 3.2rem;
-  font-weight: 900;
-  line-height: 1;
-  transition: all 0.5s;
-}
-
-.saving-amount.positive {
-  background: linear-gradient(135deg, var(--green), var(--green2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.saving-amount.negative {
-  background: linear-gradient(135deg, var(--red), #FF6B6B);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.saving-amount.zero {
-  background: linear-gradient(135deg, var(--text2), var(--text));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.hero-msg {
-  text-align: center;
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: var(--gold);
-  min-height: 22px;
-  margin-bottom: 16px;
-}
-
-/* BUDGET BAR */
-.budget-bar-wrap {
-  margin-bottom: 8px;
-}
-
-.budget-bar-labels {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.75rem;
-  color: var(--text2);
-  margin-bottom: 6px;
-}
-
-.budget-bar-track {
-  height: 10px;
-  background: rgba(255,255,255,0.08);
-  border-radius: 50px;
-  overflow: hidden;
-}
-
-.budget-bar-fill {
-  height: 100%;
-  border-radius: 50px;
-  transition: width 0.8s cubic-bezier(0.34,1.56,0.64,1);
-  background: linear-gradient(90deg, var(--green), var(--green2));
-}
-
-.budget-bar-fill.warning {
-  background: linear-gradient(90deg, var(--gold2), var(--gold));
-}
-
-.budget-bar-fill.danger {
-  background: linear-gradient(90deg, var(--red), #FF6B6B);
-}
-
-/* STATS ROW */
-.stats-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
-  margin: 0 16px 16px;
-}
-
-.stat-box {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 14px 10px;
-  text-align: center;
-  transition: transform 0.2s;
-}
-
-.stat-box:hover { transform: translateY(-2px); }
-
-.stat-box .val {
-  font-family: 'Baloo 2', cursive;
-  font-size: 1.3rem;
-  font-weight: 800;
-  color: var(--gold);
-}
-
-.stat-box .lbl {
-  font-size: 0.68rem;
-  color: var(--text2);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-top: 2px;
-}
-
-/* SECTION TITLE */
-.sec-title {
-  font-family: 'Baloo 2', cursive;
-  font-size: 1.1rem;
-  font-weight: 800;
-  padding: 0 20px;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* INPUT CARD */
-.input-card {
-  margin: 0 16px 16px;
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-}
-
-.input-row {
-  margin-bottom: 14px;
-}
-
-.input-label {
-  font-size: 0.75rem;
-  font-weight: 800;
-  color: var(--text2);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 6px;
-}
-
-.input-field {
-  width: 100%;
-  background: var(--surface2);
-  border: 1.5px solid var(--border);
-  border-radius: 12px;
-  padding: 12px 16px;
-  color: var(--text);
-  font-family: 'Nunito', sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  outline: none;
-  transition: border-color 0.3s;
-}
-
-.input-field:focus { border-color: var(--purple2); }
-.input-field::placeholder { color: var(--text2); font-weight: 400; }
-
-.input-row-split {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 14px;
-}
-
-/* CATEGORY PILLS */
-.cat-pills {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 14px;
-}
-
-.cat-pill {
-  padding: 7px 14px;
-  border-radius: 50px;
-  border: 1.5px solid var(--border);
-  background: var(--surface2);
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-  color: var(--text2);
-}
-
-.cat-pill.active {
-  border-color: var(--purple2);
-  background: rgba(159,103,255,0.15);
-  color: var(--purple2);
-}
-
-/* BUTTONS */
-.btn {
-  width: 100%;
-  padding: 14px;
-  border-radius: 14px;
-  border: none;
-  font-family: 'Baloo 2', cursive;
-  font-size: 1rem;
-  font-weight: 800;
-  cursor: pointer;
-  transition: all 0.2s;
-  letter-spacing: 0.5px;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, var(--purple), var(--purple2));
-  color: white;
-  box-shadow: 0 4px 20px rgba(124,58,237,0.4);
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 28px rgba(124,58,237,0.6);
-}
-
-.btn-primary:active { transform: scale(0.98); }
-
-.btn-success {
-  background: linear-gradient(135deg, var(--green), #059669);
-  color: white;
-  box-shadow: 0 4px 20px rgba(16,185,129,0.4);
-}
-
-.btn-success:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 28px rgba(16,185,129,0.5);
-}
-
-/* TABS */
-.tabs {
-  display: flex;
-  gap: 8px;
-  padding: 0 16px;
-  margin-bottom: 16px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.tab {
-  padding: 8px 18px;
-  border-radius: 50px;
-  border: 1.5px solid var(--border);
-  background: var(--surface);
-  font-size: 0.82rem;
-  font-weight: 800;
-  cursor: pointer;
-  white-space: nowrap;
-  color: var(--text2);
-  transition: all 0.2s;
-}
-
-.tab.active {
-  background: linear-gradient(135deg, var(--purple), var(--purple2));
-  border-color: var(--purple);
-  color: white;
-}
-
-/* EXPENSE LIST */
-.expense-list {
-  margin: 0 16px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.expense-item {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 14px 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  animation: slideIn 0.3s ease;
-}
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateX(-20px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-.exp-icon {
-  width: 42px; height: 42px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-  flex-shrink: 0;
-}
-
-.exp-info { flex: 1; }
-
-.exp-name {
-  font-weight: 800;
-  font-size: 0.9rem;
-  margin-bottom: 2px;
-}
-
-.exp-meta {
-  font-size: 0.72rem;
-  color: var(--text2);
-}
-
-.exp-amount {
-  font-family: 'Baloo 2', cursive;
-  font-weight: 900;
-  font-size: 1.1rem;
-  color: var(--red);
-}
-
-.exp-del {
-  background: rgba(239,68,68,0.1);
-  border: none;
-  color: var(--red);
-  width: 30px; height: 30px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: all 0.2s;
-}
-
-.exp-del:hover { background: rgba(239,68,68,0.25); }
-
-/* BADGES */
-.badges-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin: 0 16px 16px;
-}
-
-.badge-card {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: 18px;
-  padding: 16px 10px;
-  text-align: center;
-  transition: all 0.3s;
-}
-
-.badge-card.unlocked {
-  border-color: var(--gold);
-  background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(255,165,0,0.04));
-  animation: badgePulse 3s ease-in-out infinite;
-}
-
-@keyframes badgePulse {
-  0%,100% { box-shadow: 0 0 0 0 rgba(255,215,0,0.2); }
-  50% { box-shadow: 0 0 20px 4px rgba(255,215,0,0.2); }
-}
-
-.badge-icon {
-  font-size: 2rem;
-  margin-bottom: 6px;
-  filter: var(--bf, grayscale(1) opacity(0.3));
-}
-
-.badge-card.unlocked .badge-icon { filter: none; }
-
-.badge-name {
-  font-size: 0.7rem;
-  font-weight: 800;
-  color: var(--text2);
-  line-height: 1.3;
-}
-
-.badge-card.unlocked .badge-name { color: var(--gold); }
-
-/* WEEKLY CHART */
-.chart-wrap {
-  margin: 0 16px 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-}
-
-.chart-bars {
-  display: flex;
-  align-items: flex-end;
-  gap: 8px;
-  height: 100px;
-  margin-bottom: 8px;
-}
-
-.chart-bar-col {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  height: 100%;
-  justify-content: flex-end;
-}
-
-.chart-bar {
-  width: 100%;
-  border-radius: 6px 6px 0 0;
-  transition: height 1s cubic-bezier(0.34,1.56,0.64,1);
-  min-height: 4px;
-  background: linear-gradient(180deg, var(--green2), var(--green));
-  position: relative;
-  cursor: pointer;
-}
-
-.chart-bar.today {
-  background: linear-gradient(180deg, var(--gold), var(--gold2));
-  box-shadow: 0 0 12px rgba(255,215,0,0.4);
-}
-
-.chart-bar.negative {
-  background: linear-gradient(180deg, #FF6B6B, var(--red));
-}
-
-.chart-day {
-  font-size: 0.68rem;
-  color: var(--text2);
-  font-weight: 700;
-}
-
-/* AI COACH */
-.ai-card {
-  margin: 0 16px 16px;
-  background: linear-gradient(135deg, #1a0f3a, #0d1f3a);
-  border: 1.5px solid rgba(59,130,246,0.3);
-  border-radius: var(--radius);
-  padding: 20px;
-  position: relative;
-  overflow: hidden;
-}
-
-.ai-card::before {
-  content: '';
-  position: absolute;
-  top: -50%; right: -20%;
-  width: 200px; height: 200px;
-  background: radial-gradient(circle, rgba(59,130,246,0.15), transparent 70%);
-}
-
-.ai-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 14px;
-}
-
-.ai-avatar {
-  width: 40px; height: 40px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--blue), #60A5FA);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-}
-
-.ai-name {
-  font-weight: 800;
-  font-size: 0.9rem;
-  color: #60A5FA;
-}
-
-.ai-subtitle {
-  font-size: 0.7rem;
-  color: var(--text2);
-}
-
-.ai-msg-box {
-  background: rgba(255,255,255,0.05);
-  border-radius: 12px;
-  padding: 14px;
-  font-size: 0.87rem;
-  line-height: 1.6;
-  color: var(--text);
-  min-height: 60px;
-  margin-bottom: 12px;
-  border: 1px solid rgba(255,255,255,0.08);
-}
-
-.ai-input-row {
-  display: flex;
-  gap: 8px;
-}
-
-.ai-input {
-  flex: 1;
-  background: rgba(255,255,255,0.07);
-  border: 1.5px solid rgba(255,255,255,0.12);
-  border-radius: 50px;
-  padding: 10px 16px;
-  color: var(--text);
-  font-family: 'Nunito', sans-serif;
-  font-size: 0.85rem;
-  outline: none;
-}
-
-.ai-input:focus { border-color: #60A5FA; }
-.ai-input::placeholder { color: var(--text2); }
-
-.ai-send {
-  background: linear-gradient(135deg, var(--blue), #60A5FA);
-  border: none;
-  border-radius: 50px;
-  padding: 10px 18px;
-  color: white;
-  font-weight: 800;
-  cursor: pointer;
-  font-size: 0.85rem;
-  font-family: 'Nunito', sans-serif;
-  transition: all 0.2s;
-}
-
-.ai-send:hover { opacity: 0.85; transform: scale(1.02); }
-.ai-send:disabled { opacity: 0.5; cursor: not-allowed; }
-
-/* CELEBRATION OVERLAY */
-.celebration {
-  position: fixed;
-  inset: 0;
-  z-index: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(8px);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-
-.celebration.show {
-  opacity: 1;
-  pointer-events: all;
-}
-
-.celebration-box {
-  background: linear-gradient(135deg, #1e1040, #2d1b6e);
-  border: 2px solid var(--gold);
-  border-radius: 28px;
-  padding: 40px 32px;
-  text-align: center;
-  max-width: 300px;
-  box-shadow: 0 0 60px rgba(255,215,0,0.3);
-  animation: celebPop 0.5s cubic-bezier(0.34,1.56,0.64,1);
-}
-
-@keyframes celebPop {
-  from { transform: scale(0.5) rotate(-5deg); opacity: 0; }
-  to { transform: scale(1) rotate(0deg); opacity: 1; }
-}
-
-.celeb-emoji { font-size: 4rem; margin-bottom: 12px; display: block; }
-
-.celeb-title {
-  font-family: 'Baloo 2', cursive;
-  font-size: 1.8rem;
-  font-weight: 900;
-  background: linear-gradient(135deg, var(--gold), var(--gold2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 8px;
-}
-
-.celeb-msg {
-  font-size: 0.9rem;
-  color: var(--text);
-  line-height: 1.5;
-  margin-bottom: 20px;
-}
-
-.celeb-close {
-  background: linear-gradient(135deg, var(--gold2), var(--gold));
-  border: none;
-  border-radius: 50px;
-  padding: 12px 32px;
-  font-family: 'Baloo 2', cursive;
-  font-weight: 800;
-  font-size: 1rem;
-  cursor: pointer;
-  color: var(--bg);
-  transition: transform 0.2s;
-}
-
-.celeb-close:hover { transform: scale(1.05); }
-
-/* TOAST */
-.toast {
-  position: fixed;
-  bottom: 90px;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 50px;
-  padding: 10px 20px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--text);
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.3s;
-  z-index: 300;
-  white-space: nowrap;
-}
-
-.toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-/* BOTTOM NAV */
-.bottom-nav {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  background: rgba(19,15,36,0.95);
-  backdrop-filter: blur(20px);
-  border-top: 1px solid var(--border);
-  display: flex;
-  padding: 8px 16px 12px;
-  z-index: 100;
-  max-width: 480px;
-  margin: 0 auto;
-}
-
-.nav-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  padding: 6px;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.2s;
-  border: none;
-  background: transparent;
-}
-
-.nav-item.active { background: rgba(159,103,255,0.15); }
-
-.nav-icon { font-size: 1.3rem; }
-
-.nav-label {
-  font-size: 0.62rem;
-  font-weight: 800;
-  color: var(--text2);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.nav-item.active .nav-label { color: var(--purple2); }
-
-/* VIEWS */
-.view { display: none; }
-.view.active { display: block; }
-
-/* LOADING SPINNER */
-.spin {
-  display: inline-block;
-  width: 14px; height: 14px;
-  border: 2px solid rgba(255,255,255,0.3);
-  border-top-color: white;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* LEVEL BAR */
-.level-wrap {
-  margin: 0 16px 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 18px;
-}
-
-.level-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.level-name {
-  font-family: 'Baloo 2', cursive;
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: var(--gold);
-}
-
-.level-xp {
-  font-size: 0.75rem;
-  color: var(--text2);
-  font-weight: 700;
-}
-
-.xp-track {
-  height: 8px;
-  background: rgba(255,255,255,0.08);
-  border-radius: 50px;
-  overflow: hidden;
-}
-
-.xp-fill {
-  height: 100%;
-  border-radius: 50px;
-  background: linear-gradient(90deg, var(--gold2), var(--gold));
-  transition: width 1s cubic-bezier(0.34,1.56,0.64,1);
-}
-
-/* EMPTY */
-.empty {
-  text-align: center;
-  padding: 32px 20px;
-  color: var(--text2);
-}
-.empty-icon { font-size: 2.5rem; margin-bottom: 10px; }
-
-/* HISTORY */
-.history-day {
-  margin: 0 16px 12px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  overflow: hidden;
-}
-
-.history-header {
-  padding: 12px 16px;
-  background: var(--surface2);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.82rem;
-  font-weight: 800;
-}
-
-.history-saved {
-  color: var(--green2);
-  font-family: 'Baloo 2', cursive;
-}
-
-.history-items {
-  padding: 10px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.history-exp {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.8rem;
-  color: var(--text2);
-  padding: 4px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-}
-
-/* RESPONSIVE */
-@media (max-width: 360px) {
-  .badges-grid { grid-template-columns: repeat(3,1fr); }
-  .saving-amount { font-size: 2.6rem; }
-}
+    :root {
+        --bg: #050505;
+        --card: rgba(255, 255, 255, 0.03);
+        --border: rgba(255, 255, 255, 0.08);
+        --lime: #C8F135;
+    }
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background-color: var(--bg);
+        color: #fff;
+        overflow-x: hidden;
+    }
+    .syne { font-family: 'Syne', sans-serif; }
+    
+    /* Smooth Glow Background */
+    .glow {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: radial-gradient(circle at 50% -20%, rgba(200, 241, 53, 0.15), transparent 50%),
+                    radial-gradient(circle at -10% 100%, rgba(79, 172, 254, 0.05), transparent 40%);
+        z-index: -1;
+    }
+
+    /* Glass Cards */
+    .glass {
+        background: var(--card);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--border);
+        border-radius: 32px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass:hover {
+        border-color: rgba(200, 241, 53, 0.3);
+        background: rgba(255, 255, 255, 0.05);
+        transform: translateY(-5px);
+    }
+
+    /* Animated Button */
+    .btn-lime {
+        background: var(--lime);
+        color: #000;
+        font-weight: 800;
+        padding: 18px 32px;
+        border-radius: 18px;
+        transition: 0.3s;
+        box-shadow: 0 0 20px rgba(200, 241, 53, 0.2);
+    }
+    .btn-lime:hover {
+        transform: scale(1.03);
+        box-shadow: 0 0 40px rgba(200, 241, 53, 0.4);
+    }
+
+    input {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 16px;
+        color: #fff;
+        outline: none;
+        transition: 0.3s;
+    }
+    input:focus { border-color: var(--lime); background: rgba(255, 255, 255, 0.1); }
+
+    .nav-blur { background: rgba(5, 5, 5, 0.7); backdrop-filter: blur(15px); }
 </style>
 </head>
 <body>
 
-<!-- STARS -->
-<div id="particles"></div>
+<div class="glow"></div>
 
-<!-- CELEBRATION -->
-<div class="celebration" id="celebration">
-  <div class="celebration-box">
-    <span class="celeb-emoji" id="celebEmoji">🎉</span>
-    <div class="celeb-title" id="celebTitle">AMAZING!</div>
-    <div class="celeb-msg" id="celebMsg">Tu saving hero ban gaya!</div>
-    <button class="celeb-close" onclick="closeCelebration()">Shukriya! 🙏</button>
-  </div>
-</div>
+<nav class="fixed w-full z-50 nav-blur border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-8 h-20 flex justify-between items-center">
+        <div class="syne text-2xl font-black italic tracking-tighter">
+            SAVING<span class="text-[#C8F135]">HERO.</span>
+        </div>
+        <div id="streakPill" class="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full text-sm font-bold text-orange-400">
+            🔥 <span id="streakNum">0</span> DAY STREAK
+        </div>
+    </div>
+</nav>
 
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
+<main class="pt-32 pb-20 px-6 max-w-7xl mx-auto">
+    <div class="grid lg:grid-cols-12 gap-8">
+        
+        <div class="lg:col-span-7 space-y-8">
+            <div class="glass p-10 relative overflow-hidden">
+                <div class="relative z-10">
+                    <p class="text-xs font-black uppercase tracking-[4px] text-white/40 mb-4">Total Savings Today</p>
+                    <h1 class="syne text-7xl md:text-9xl font-black italic mb-6" id="savBig">₹0</h1>
+                    
+                    <div class="w-full bg-white/5 h-3 rounded-full overflow-hidden mb-6">
+                        <div id="pFill" class="h-full bg-[#C8F135] transition-all duration-700 shadow-[0_0_20px_#C8F135]" style="width: 0%"></div>
+                    </div>
+                    
+                    <div class="flex justify-between text-sm font-bold text-white/40 uppercase tracking-widest">
+                        <span>Spent: <span id="spLbl" class="text-white">₹0</span></span>
+                        <span>Budget: <span id="bgLbl" class="text-white">₹0</span></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-6">
+                <div class="glass p-8">
+                    <p class="text-[10px] font-bold text-white/30 uppercase mb-2">Level</p>
+                    <p class="text-2xl font-black syne">ROOKIE 01</p>
+                </div>
+                <div class="glass p-8">
+                    <p class="text-[10px] font-bold text-white/30 uppercase mb-2">Next Goal</p>
+                    <p class="text-2xl font-black syne">iPHONE 16</p>
+                </div>
+            </div>
+        </div>
 
-<!-- APP -->
-<div class="app">
+        <div class="lg:col-span-5 space-y-6">
+            <div class="glass p-8">
+                <h3 class="syne text-xl mb-6 italic uppercase">Set Daily Limit</h3>
+                <div class="flex flex-col gap-4">
+                    <input type="number" id="bgInp" placeholder="Enter Budget (₹)">
+                    <button onclick="setBudget()" class="btn-lime uppercase text-xs tracking-widest">Set Limit ⚡</button>
+                </div>
+            </div>
 
-  <!-- TOPBAR -->
-  <div class="topbar">
-    <div class="hero-logo">💰 SavingHero</div>
-    <div class="hero-tagline">Aaj Bachaya = Kal Ka Khazana</div>
-  </div>
+            <div class="glass p-8">
+                <h3 class="syne text-xl mb-6 italic uppercase">Add Expense</h3>
+                <div class="flex flex-col gap-4">
+                    <input type="text" id="exName" placeholder="What did you buy?">
+                    <input type="number" id="exAmt" placeholder="Amount (₹)">
+                    <button onclick="addExp()" class="w-full py-4 rounded-2xl bg-white/5 border border-white/10 font-bold hover:bg-white/10 transition">Save Log 💸</button>
+                </div>
+            </div>
+        </div>
 
-  <!-- ===== HOME VIEW ===== -->
-  <div class="view active" id="view-home">
+    </div>
+</main>
 
-    <!-- HERO CARD -->
-    <div class="hero-card">
-      <div class="date-row">
-        <span class="date-badge" id="todayDate">—</span>
-        <span class="streak-badge">🔥 <span id="streakCount">0</span> din streak</span>
-      </div>
+<script>
+let state = { budget: 0, expenses: [], streak: 0 };
 
-      <div class="saving-display">
-        <div class="saving-label">Aaj Ki Bachat</div>
-        <div class="saving-amount zero" id="savingDisplay">₹0</div>
-        <div class="hero-msg" id="heroMsg">Apna budget set karo! 💪</div>
-      </div>
+function ui() {
+    const spent = state.expenses.reduce((a, e) => a + e.amount, 0);
+    const saved = state.budget - spent;
+    const pct = state.budget > 0 ? Math.min((spent / state.budget) * 100, 100) : 0;
 
-      <div class="budg
+    // Numbers animation
+    document.getElementById('savBig').textContent = `₹${saved.toLocaleString()}`;
+    document.getElementById('spLbl').textContent = `₹${spent.toLocaleString()}`;
+    document.getElementById('bgLbl').textContent = `₹${state.budget.toLocaleString()}`;
+    document.getElementById('pFill').style.width = pct + '%';
+
+    // Color Logic
+    if(saved < 0) {
+        document.getElementById('savBig').style.color = '#FF4757';
+    } else {
+        document.getElementById('savBig').style.color = '#C8F135';
+    }
+}
+
+function setBudget() {
+    const val = parseFloat(document.getElementById('bgInp').value);
+    if(val > 0) {
+        state.budget = val;
+        ui();
+        showToast('Limit Updated!');
+    }
+}
+
+function addExp() {
+    const name = document.getElementById('exName').value;
+    const amt = parseFloat(document.getElementById('exAmt').value);
+    if(name && amt > 0) {
+        if(state.budget === 0) { return showToast('Set Budget First!'); }
+        state.expenses.push({name, amount: amt});
+        ui();
+        document.getElementById('exName').value = '';
+        document.getElementById('exAmt').value = '';
+        showToast('Expense Added!');
+    }
+}
+
+function showToast(msg) {
+    const t = document.createElement('div');
+    t.className = "fixed bottom-10 left-1/2 -translate-x-1/2 bg-white text-black px-6 py-3 rounded-full font-bold text-sm z-[2000] shadow-2xl";
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 2000);
+}
+</script>
+
+</body>
+</html>
